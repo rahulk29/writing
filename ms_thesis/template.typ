@@ -50,8 +50,8 @@
     margin: if paper-size != "a4-paper" {
       (
         top: (116pt / 279mm) * 100%,
-        left: (126pt / 216mm) * 100%,
-        right: (128pt / 216mm) * 100%,
+        left: (62pt / 216mm) * 100%,
+        right: (64pt / 216mm) * 100%,
         bottom: (94pt / 279mm) * 100%,
       )
     } else {
@@ -182,7 +182,7 @@
   }))
 
   // Configure paragraph properties.
-  set par(first-line-indent: 1.2em, justify: true, leading: 0.58em)
+  set par(first-line-indent: 1.2em, justify: false, leading: 0.58em)
   show par: set block(spacing: 0.58em)
 
   // Display the abstract
