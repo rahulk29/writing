@@ -1,9 +1,10 @@
-.PHONY: default clean
+PDFLATEX_FLAGS = -halt-on-error -output-format pdf -output-directory build/ -shell-escape
 
-default: thesis.pdf
+thesis.pdf: thesis.tex abstract.tex references.bib chap1.tex chap2.tex chap3.tex
+	mkdir -p build/
+	pdflatex $(PDFLATEX_FLAGS) thesis.tex
+	biber --output-directory build/ thesis
+	pdflatex $(PDFLATEX_FLAGS) thesis.tex
+	pdflatex $(PDFLATEX_FLAGS) thesis.tex
+	cp build/thesis.pdf ./thesis.pdf
 
-thesis.pdf: thesis.typ template.typ refs.bib $(wildcard figures/**/*)
-	typst compile thesis.typ
-
-clean:
-	rm -f thesis.pdf
