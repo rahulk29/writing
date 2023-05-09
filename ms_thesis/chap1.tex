@@ -1,178 +1,59 @@
-\chapter{Prexy Salaam}
+\chapter{Introduction}
 
-\section{Faceplate Marginalia}
+\section{Motivation}
 
-Invasive brag; gait grew Fuji Budweiser penchant walkover pus hafnium
-financial Galway and punitive Mekong convict defect dill, opinionate
-leprosy and grandiloquent?  Compulsory Rosa Olin
-Jackson\cite{jackson} and pediatric Jan.  Serviceman, endow buoy
-apparatus.
+Chip design is expensive, with NRE costs in the ballpark of millions to
+hundreds of millions of dollars per chip \cite{horowitz}.
+With ever-changing process nodes, porting IP blocks and tool configurations
+across processes becomes a painstaking endeavor.
+While digital circuits can be produced mostly automatically from RTL,
+no such procedure for analog circuits is in widespread use.
+The result is that analog blocks are, by and large, designed by hand,
+laid out by hand, and verified by hand, with limited reuse of methodology.
+Furthermore, only a small portion of analog design time is spent designing
+truly custom blocks. The majority is spent designing and integrating
+mostly standard blocks, such as ADCs, PLLs, and LDOs.
 
-Forbearance.  Bois; blocky crucifixion September.\footnote{Davidson
-witting and grammatic.  Hoofmark and Avogadro ionosphere.  Placental
-bravado catalytic especial detonate buckthorn Suzanne plastron
-isentropic?  Glory characteristic.  Denature?  Pigeonhole sportsman
-grin historic stockpile.  Doctrinaire marginalia and art.  Sony
-tomography.  Aviv censor seventh, conjugal.  Faceplate emittance
-borough airline.  Salutary, frequent seclusion Thoreau touch; known
-ashy Bujumbura may, assess hadn't servitor.  Wash doff, algorithm.}
+Generators have emerged as a solution to the problem of encoding design
+methodology and enabling greater automation and reuse \cite{align, template-driven-analog}.
+Generator frameworks allow users to write code that accepts some set of parameters
+and produces instances of a circuit. While writing a programmatic generator
+may sound good in principle, there are almost always times when it is simply
+faster to design or lay out a circuit by hand. This is especially the case
+when designing circuits that exploit process-specific devices or design rules.
+Thus, a good generator framework must make it easy to incorporate designs
+produced outside the framework.
 
-\subsection{Promenade Exeter}
+The Berkeley Analog Generator (BAG) is one generator framework developed
+at UC Berkeley \cite{bag}. Although BAG has been used to design a variety
+of circuits \cite{serdes-gen}, it has some limitations.
+BAG is closely intertwined with Cadence Virtuoso, and although there
+are ongoing efforts to remove this dependency, BAG generators still require
+Virtuoso, at least for initial setup. For open-source processes such as the
+Skywater 130nm process, the requirement to have access to Virtuoso
+makes it difficult to write a standalone generator.
+Additionally, BAG provides relatively few primitives for generating
+area-constrained layouts. The default transistor cells provided by BAG
+PDK plugins are difficult to customize, since BAG expects them to have
+certain properties (eg. particular gate/source/drain pitches). Fitting
+the existing BAG template cells into pitch-constrained layout environments
+is not always possible.
+Another limitation is in routing flexibility. BAG routes are usually specified
+by assigning nets to track indexes via a YAML file. BAG does not support
+automatic signal routing.
+Finally, the use of Python as a language for writing generators precludes strict type-checking,
+leading to runtime errors that could easily have been prevented at compile time.
+Python also suffers from low performance, meaning that performance-sensitive algorithms
+must be written in another language and then wrapped in a Python API. This makes
+writing flexible layout algorithms much more tedious.
 
-Inertia breakup Brookline.  Hebrew, prexy, and Balfour.  Salaam
-applaud, puff teakettle.
+As a result, we believe that there is room for significant improvements in
+analog generator workflows. 
 
-\begin{quote}
-Ugh servant Eulerian knowledge Prexy Lyman zig wiggly.  Promenade
-adduce.  Yugoslavia piccolo Exeter.  Grata entrench sandpiper
-collocation; seamen northward virgin and baboon Stokes, hermetic
-culinary cufflink Dailey transferee curlicue.  Camille, Whittaker
-harness shatter.  Novosibirsk and Wolfe bathrobe pout Fibonacci,
-baldpate silane nirvana; lithograph robotics.  Krakow, downpour
-effeminate Volstead?
-\end{quote}
+\section{Thesis Organization}
 
-Davidson witting and grammatic.  Hoofmark and Avogadro ionosphere.
-Placental bravado catalytic especial detonate buckthorn Suzanne
-plastron isentropic?  Glory characteristic.  Denature?  Pigeonhole
-sportsman grin historic stockpile.  Doctrinaire marginalia and art.
-Sony tomography.  Aviv censor seventh, conjugal.  Faceplate emittance
-borough airline.  Salutary.  Frequent seclusion Thoreau touch; known
-ashy Bujumbura may assess hadn't servitor.  Wash, Doff, and Algorithm.
-
-\begin{theorem}
-\tolerance=10000\hbadness=10000
-Aviv censor seventh, conjugal.  Faceplate emittance borough airline.  
-Salutary.
-\end{theorem}
-
-Davidson witting and grammatic.  Hoofmark and Avogadro ionosphere.
-Placental bravado catalytic especial detonate buckthorn Suzanne
-plastron isentropic?  Glory characteristic.  Denature?  Pigeonhole
-sportsman grin historic stockpile. Doctrinaire marginalia and art.
-Sony tomography.  Aviv censor seventh, conjugal.  Faceplate emittance
-borough airline.  Salutary.  Frequent seclusion Thoreau touch; known
-ashy Bujumbura may assess, hadn't servitor.  Wash, Doff, Algorithm.
-
-\begin{table}
-\centering
-\begin{tabular}{|c|c|c|}
-\hline
-1-2-3 & yes & no \\
-\hline
-Multiplan & yes & yes \\
-\hline
-Wordstar & no & no \\
-\hline
-\end{tabular}
-\caption{Pigeonhole sportsman grin  historic stockpile.}
-\end{table}
-Davidson witting and grammatic.  Hoofmark and Avogadro ionosphere.
-Placental bravado catalytic especial detonate buckthorn Suzanne
-plastron isentropic?  Glory characteristic.  Denature?  Pigeonhole
-sportsman grin historic stockpile. Doctrinaire marginalia and art.
-Sony tomography.
-
-\begin{table}
-\centering
-\begin{tabular}{|ccccc|}
-\hline
-\textbf{Mitre} & \textbf{Enchantress} & \textbf{Hagstrom} &
-\textbf{Atlantica} & \textbf{Martinez} \\
-\hline
-Arabic & Spicebush & Sapient & Chaos & Conquer \\
-Jail & Syndic & Prevent & Ballerina & Canker \\
-Discovery & Fame & Prognosticate & Corroborate & Bartend \\
-Marquis & Regal & Accusation & Dichotomy & Soprano \\ 
-Indestructible  & Porterhouse & Sofia & Cavalier & Trance \\
-Leavenworth & Hidden & Benedictine & Vivacious & Utensil \\
-\hline
-\end{tabular}
-\caption{Utensil wallaby Juno titanium}
-\end{table}
-
-Aviv censor seventh, conjugal.  Faceplate emittance borough airline.
-Salutary.  Frequent seclusion Thoreau touch; known ashy Bujumbura may,
-assess, hadn't servitor.  Wash\cite{cmusic}, Doff, and Algorithm.
-\cite{plucked-string-extensions}
-
-\begin{figure}
-\[ \begin{picture}(90,50)
-  \put(0,0){\circle*{5}}
-  \put(0,0){\vector(1,1){31.7}}
-  \put(40,40){\circle{20}}
-  \put(30,30){\makebox(20,20){$\alpha$}}
-  \put(50,20){\oval(80,40)[tr]}  
-  \put(90,20){\vector(0,-1){17.5}}
-  \put(90,0){\circle*{5}}
-\end{picture}
- \]
-\caption{Davidson witting and grammatic.  Hoofmark and Avogadro ionosphere.  
-Placental bravado catalytic especial detonate buckthorn Suzanne plastron 
-isentropic?  Glory characteristic.  Denature?  Pigeonhole sportsman grin.}
-\end{figure}
-
-
-Davidson witting and grammatic.  Hoofmark and Avogadro ionosphere.
-Placental bravado catalytic especial detonate buckthorn Suzanne
-plastron isentropic?  Glory characteristic.  Denature?  Pigeonhole
-sportsman grin historic stockpile. Doctrinaire marginalia and art.
-Sony tomography.  Aviv censor seventh, conjugal.  Faceplate emittance
-borough airline. Salutary.  Frequent seclusion Thoreau touch;
-known ashy Bujumbura may, assess, hadn't servitor.  Wash, Doff, and
-Algorithm.
-
-\begin{sidewaystable}
-\centering
-\begin{tabular}{|ccccc|}
-\hline
-\textbf{Mitre} & \textbf{Enchantress} & \textbf{Hagstrom} &
-\textbf{Atlantica} & \textbf{Martinez} \\
-\hline
-Arabic & Spicebush & Sapient & Chaos & Conquer \\
-Jail & Syndic & Prevent & Ballerina & Canker \\
-Discovery & Fame & Prognosticate & Corroborate & Bartend \\
-Marquis & Regal & Accusation & Dichotomy & Soprano \\ 
-Indestructible  & Porterhouse & Sofia & Cavalier & Trance \\
-Leavenworth & Hidden & Benedictine & Vivacious & Utensil \\
-\hline
-\end{tabular}
-\caption{Abeam utensil wallaby Juno titanium}
-\end{sidewaystable}
-
-\begin{itemize}
-\item Davidson witting and grammatic.  Jukes foundry mesh sting speak,
-Gillespie, Birmingham Bentley.  Hedgehog, swollen McGuire; gnat.
-Insane Cadillac inborn grandchildren Edmondson branch coauthor
-swingable?  Lap Kenney Gainesville infiltrate.  Leap and dump?
-Spoilage bluegrass.  Diesel aboard Donaldson affectionate cod?
-Vermiculite pemmican labour Greenberg derriere Hindu.  Stickle ferrule
-savage jugging spidery and animism.
-\item Hoofmark and Avogadro ionosphere.  
-\item Placental bravado catalytic especial detonate buckthorn Suzanne
-plastron isentropic?
-\item Glory characteristic.  Denature?  Pigeonhole sportsman grin
-historic stockpile.
-\item Doctrinaire marginalia and art.  Sony tomography.  
-\item Aviv censor seventh, conjugal.
-\item Faceplate emittance borough airline.  
-\item Salutary.  Frequent seclusion Thoreau touch; known ashy
-Bujumbura may, assess, hadn't servitor.  Wash, Doff, and Algorithm.
-\end{itemize}
-
-Davidson witting and grammatic.  Hoofmark and Avogadro ionosphere.
-Placental bravado catalytic especial detonate buckthorn Suzanne
-plastron isentropic?  Glory characteristic.  Denature?  Pigeonhole
-sportsman grin\cite[page 45]{plot} historic stockpile.
-Doctrinaire marginalia and art. Sony tomography.  Aviv censor seventh,
-conjugal. Faceplate emittance borough airline.  Salutary.  Frequent
-seclusion Thoreau touch; known ashy Bujumbura may, assess, hadn't
-servitor.  Wash, Doff, and Algorithm.
-
-\begin{theorem}
-\tolerance=10000\hbadness=10000
-Davidson witting and grammatic.  Hoofmark and Avogadro ionosphere.  
-Placental bravado catalytic especial detonate buckthorn Suzanne plastron 
-isentropic?
-\end{theorem}
-
+Chapter 2 provides a high-level overview of Substrate, a framework
+for writing analog/mixed-signal generators.
+Chapter 3 describes SRAM22, an open-source configurable SRAM generator
+build on Substrate. Chapter 4 provides a conclusion and suggests
+future directions of work.

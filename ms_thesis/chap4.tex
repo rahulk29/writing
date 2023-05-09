@@ -1,0 +1,24 @@
+\section{Conclusion}
+
+\subsection{Additional Features}
+
+Substrate has many features beyond the ones described in this thesis.
+In particular, Substrate provides APIs for functional verification
+and for verifying digital timing constraints (eg. setup/hold times)
+in contexts where analog workflows are more convenient.
+The latter feature was used to design and verify a schematic-level tree serializer
+generator intended for die-to-die links.
+
+\subsection{Future Work}
+
+There are a wide variety of directions for future work.
+We suggest a few here.
+
+\begin{enumerate}
+\item Designing an intermediate representation for representing circuits as graph models.
+\item Smarter algorithms for analog routing. In particular, it would be nice to have 
+an automatic router capable of generating symmetric/matched differential routing,
+while understanding which nets are aggressors and which are victims.
+\item Easing the process of integrating analog IP into digital flows, a process
+that currently requires setting up flows for several tools not often used in a purely-analog workflow.
+\end{enumerate}

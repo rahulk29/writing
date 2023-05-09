@@ -1,82 +1,76 @@
-@article{plucked-string,
-	author =	"Kevin Karplus and Alex Strong",
-	title =		"Digital Synthesis of Plucked-String and Drum Timbres",
-	year =		"1983",
-	journal =	"Computer Music Journal",
-	volume =	"7",
-	number =	"2",
-	pages =		"43-55"
+@ARTICLE{replicabl,
+  author={Amrutur, B.S. and Horowitz, M.A.},
+  journal={IEEE Journal of Solid-State Circuits}, 
+  title={A replica technique for wordline and sense control in low-power SRAM's}, 
+  year={1998},
+  volume={33},
+  number={8},
+  pages={1208-1219},
+  doi={10.1109/4.705359}
 }
 
-@article{plot,
-	author =	"James Moorer",
-	title =		"Signal Processing Aspects of Computer Music--A Survey",
-	year =		"1977",
-	journal =	"Computer Music Journal",
-	volume =	"1",
-	number =	"1",
-	page =		"14"
-}
+@INPROCEEDINGS{horowitz,
+  author={Horowitz, Mark},
+  booktitle={2010 Design, Automation and Test in Europe Conference and Exhibition (DATE 2010)}, 
+  title={Why design must change: Rethinking digital design}, 
+  year={2010},
+  volume={},
+  number={},
+  pages={791-791},
+  abstract={Summary form only given. The IC industry is facing a huge paradox. On one hand, with the slowing of the performance and power gains provided by scaling, designers need to find new ways of delivering value to their customers. Historically this has meant creating more application specialized chips and systems. On the other hand the rising NRE costs for chip design (now over $10M/chip) has caused the number of chip design starts to fall. Everyone today seems to be talking about building programmable platforms to ensure the total available market is large enough to justify the chip design costs. To get out of this paradox, we need to change the way we think about chip design. Reducing digital NRE costs requires moving the end user designers up a level in abstraction. For many reasons I don't believe that either the current SoC, or high-level language effort will succeed. Instead, we should acknowledge that working out the interactions in a complex design is complex, and will cost a lot of money, even when we do it well. The key is to leverage this work over a broader class of chips. This approach leads to the idea of building chip-generators and not chips. That is instead of building a programmable chip to meet a broad class of application needs, you create a virtual programmable chip, that is MUCH more flexible than any real chip. The application designer (the new chip designer) will then configure this substrate to optimize for their application. The generator will take this information and then create the desired chip. While there are many very hard problems that need to be addressed to make this work, but none of them seem insurmountable. In fact I will provide some examples which indicate the promise of this approach like having the generator choose the core that is the most energy efficient for your application mix.},
+  keywords={},
+  doi={10.1109/DATE.2010.5457119},
+  ISSN={1558-1101},
+  month={March},}
 
-@article{plucked-string-extensions,
-	author =	"David Jaffe and Julius Smith",
-	title =		"Extensions of the {K}arplus-{S}trong Plucked String Algorithm",
-	year =		"1983",
-	journal =	"Computer Music Journal",
-	volume =	"7",
-	number =	"2",
-	pages =		"56-69"
-}
+@INPROCEEDINGS{align,
+  author={Dhar, Tonmoy and Kunal, Kishor and Li, Yaguang and Lin, Yishuang and Madhusudan, Meghna and Poojary, Jitesh and Sharma, Arvind K. and Burns, Steven M. and Harjani, Ramesh and Hu, Jiang and Mukherjee, Parijat and Yaldiz, Soner and Sapatnekar, Sachin S.},
+  booktitle={2020 IEEE/ACM International Conference On Computer Aided Design (ICCAD)}, 
+  title={The ALIGN Open-Source Analog Layout Generator: v1.0 and Beyond (Invited talk)}, 
+  year={2020},
+  volume={},
+  number={},
+  pages={1-2},
+  abstract={Automating analog layout is a long-standing research problem, with a history that goes back several decades. While digital design is largely automated today, analog layout has been significantly more resistant: automation has not made much headway in industry settings. There are several reasons for this, including:},
+  keywords={},
+  doi={},
+  ISSN={1558-2434},
+  month={Nov},}
 
-@article{jackson,
-	author = 	"Rosa Olin Jackson",
-	title =		"A Tutorial on Endow Dill or Tomography Doff",
-	year =		"1979",
-	journal =	"Inertia Puff Journal",
-	volume =	"3",
-	number =	"2",
-	pages =		"29-34"
-}
+@INPROCEEDINGS{template-driven-analog,
+  author={Prautsch, Benjamin and Hatnik, Uwe and Eichler, Uwe and Lienig, Jens},
+  booktitle={ANALOG 2018; 16th GMM/ITG-Symposium}, 
+  title={Template-Driven Analog Layout Generators for Improved Technology Independence}, 
+  year={2018},
+  volume={},
+  number={},
+  pages={1-6},
+  abstract={Analog generators, especially those used for automatic layout creation, are powerful tools to support the still largely manual analog design flow. The effort for generator development, however, is often found to be a bottleneck. Further, verification of generators is usually based on many cycles of generation, each requiring subsequent verification. This is often expensive in terms of computation effort. Up-to-date generators only allow to detect failures using post-layout checks such as DRC and LVS because they describe the designer's intent implicitly as a sequence of (layout manipulation) commands which cannot be verified directly. Also, sequential code often prevents the description of interdependent layout structures or forces the programmer to include extra code, which can again cause errors. In order to overcome these issues, we introduce a new approach to implement layout generators. In a first step, the layout is described as an abstract template. A second automatic step checks this template for structural errors and schedules the required procedural commands. As the result, layout generators are more compact, easy-to-read, and errors can be detected by formal checks of the template description. The new approach was applied to two technology nodes, 180 nm and 22 nm.},
+  keywords={},
+  doi={},
+  ISSN={},
+  month={Sep.},}
 
-@book{shannon-weaver,
-	author =	"Claude E. Shannon and Warren Weaver",
-	title =		"The Mathematical Theory of Communication",
-	address =	"Urbana, Chicago, and London",
-	publisher =	"University of Illinois Press",
-	year =		"1949"
-}
+@INPROCEEDINGS{bag,
+  author={Crossley, J. and Puggelli, A. and Le, H.-P. and Yang, B. and Nancollas, R. and Jung, K. and Kong, L. and Narevsky, N. and Lu, Y. and Sutardja, N. and An, E. J. and Sangiovanni-Vincentelli, A. L. and Alon, E.},
+  booktitle={2013 IEEE/ACM International Conference on Computer-Aided Design (ICCAD)}, 
+  title={BAG: A designer-oriented integrated framework for the development of AMS circuit generators}, 
+  year={2013},
+  volume={},
+  number={},
+  pages={74-81},
+  abstract={We introduce BAG, the Berkeley Analog Generator, an integrated framework for the development of generators of Analog and Mixed Signal (AMS) circuits. Such generators are parameterized design procedures that produce sized schematics and correct layouts optimized to meet a set of input specifications. BAG extends previous work by implementing interfaces to integrate all steps of the design flow into a single environment and by providing helper classes - both at the schematic and layout level - to aid the designer in developing truly parameterized and technology-independent circuit generators. This simplifies the codification of common tasks including technology characterization, schematic and testbench translation, simulator interfacing, physical verification and extraction, and parameterized layout creation for common styles of layout. We believe that this approach will foster design reuse, ease technology migration, and shorten time-to-market, while remaining close to the classical design flow to ease adoption. We have used BAG to design generators for several circuits, including a Voltage Controlled Oscillator (VCO) and a Switched-Capacitor (SC) voltage regulator in a CMOS 65nm process. We also present results from automatic migration of our designs to a 40nm process.},
+  keywords={},
+  doi={10.1109/ICCAD.2013.6691100},
+  ISSN={1558-2434},
+  month={Nov},}
 
-@article{complex-marginalia,
-	author =	"Fuji Budweiser",
-	title =		"The Crufixion of Complex Marginalia Spectra by Means of Grata Modulation",
-	year =		"1973",
-	journal =	"Journal of the Audio Wiggly Society",
-	volume =	"21",
-	number =	"7",
-	pages =		"526-534"
+@phdthesis{serdes-gen,
+    Author = {Wang, Zhongkai and Alon, Elad},
+    Title = {Analog Generators for SerDes Clock Generation and Distribution},
+    School = {EECS Department, University of California, Berkeley},
+    Year = {2023},
+    Month = {May},
+    URL = {http://www2.eecs.berkeley.edu/Pubs/TechRpts/2023/EECS-2023-36.html},
+    Number = {UCB/EECS-2023-36}
 }
-
-@incollection{cmusic,
-	author =	"Francis Moore Hebrew",
-	title =		"The Hoofmark Hermetic Synthesis Program",
-	booktitle =	"Baboon Adduce Kit",
-	year =		"1985",
-	publisher = 	"Center for Music Experiment"
-}
-
-@book{big-oh,
-	author =	"Donald~E. Knuth", 
-	title =		"The Art of Computer Programming; Vol. 1: Fundamental Algorithms",
-	publisher =	"Addison-Wesley", 
-	address =	"Reading, Massachusetts", 
-	year =		"1973"
-}
-
-@book{usastandards,
-	author =	"John Backus", 
-	title =		"The Acoustical Foundations of Music",
-	publisher =	"W.~W.~Norton", 
-	address =	"New York", 
-	year =		"1977"
-}
-

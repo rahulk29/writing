@@ -11,7 +11,7 @@ Substrate aims to adhere to a few guiding principles:
   Frameworks that more rigidly prescribes how circuits are designed (eg. a library for strictly gridded layout)
   can be written as libraries using the lower-level primitives in Substrate.
   Substrate PDK plugins, for example, are simply libraries that implement a set of required functions.
-  Substrate itself is a library, which means that it can be used in any Rust project or library by simply adding it to a Rust project's dependency list. Consequently, there is no such thing as a "Substrate workspace."
+  Substrate itself is a library, which means that it can be used in any Rust project or library by simply adding it to a Rust project's dependency list. Consequently, there is no such thing as a ``Substrate workspace.''
 \end{enumerate}
 
 \subsection{Contexts}
@@ -23,7 +23,7 @@ The context is thread safe and internally synchronized, so users can run multipl
 \subsection{Components}
 
 The primary building block in Substrate is a \textbf{component}.
-Substrate components are analogous to "cells" or "modules" in other design systems.
+Substrate components are analogous to ``cells'' or ``modules'' in other design systems.
 Components accept a set of parameters, and produce zero or more \textbf{views}.
 Substrate currently supports schematic, layout, and timing views,
 though other views will likely be added in the future.
@@ -166,20 +166,25 @@ ctx.write_schematic_to_file::<VDivider>(&NoParams, path);
 \end{minted}
 
 Netlist generation in Substrate involves several passes:
-+ Netlists are preprocessed to resolve duplicate net, instance, or module names.
-+ The netlist is validated for correctness. This currently involves 3 analyses:
-  - A name-validity analysis checks for duplicate or SPICE-incompatible names.
-  - A netlist connectivity analysis verifies that all modules have their ports connected and that all widths are matched.
-  - A net driver analysis verifies that all input ports are driven by at least one source and produces warnings if nets have multiple drivers.
-+ A netlisting plugin maps the in-memory representation of Substrate components to simulator specific syntax and writes the content of the netlist to an output stream (usually a file).
-
+\begin{enumerate}
+\item Netlists are preprocessed to resolve duplicate net, instance, or module names.
+\item The netlist is validated for correctness. This currently involves 3 analyses:
+\begin{enumerate}
+  \item A name-validity analysis checks for duplicate or SPICE-incompatible names.
+  \item A netlist connectivity analysis verifies that all modules have their ports connected and that all widths are matched.
+  \item A net driver analysis verifies that all input ports are driven by at least one source and produces warnings if nets have multiple drivers.
+\end{enumerate}
+\item A netlisting plugin maps the in-memory representation of Substrate components to simulator specific syntax and writes the content of the netlist to an output stream (usually a file).
+\end{enumerate}
 
 \section{Layout Entry} \label{sec:layout-entry}
 
 Most analog generators, Substrate included, produce layouts in roughly three steps:
-+ Generate or import sub-components.
-+ Place sub-components.
-+ Route between sub-components.
+\begin{enumerate}
+\item Generate or import sub-components.
+\item Place sub-components.
+\item Route between sub-components.
+\end{enumerate}
 
 The first step is described in more detail in \ref{sec:subcomponent-layout-generation},
 the second step in \ref{sec:placement-utilities}, and the third in \ref{sec:routing}.
@@ -328,7 +333,7 @@ Similarly, there is a \verb|Pad| tile type, which adds padding to an inner tile 
 \end{itemize}
 
 These custom types are easily composable. For example, you can create a \verb|Pad| tile that wraps a \verb|LayerBbox| tile
-that in turn wraps a "regular" tile.
+that in turn wraps a ``regular'' tile.
 
 
 \subsection{Routing} \label{sec:routing}
