@@ -1,4 +1,4 @@
-\chapter{Substrate}
+\chapter{Substrate} \label{sec:substrate}
 
 \section{Architecture}
 \subsection{Guiding Principles}
@@ -33,15 +33,19 @@ In the Rust language, a type is considered a component if it implements the \ver
 \begin{minted}{rust}
 pub trait Component: Any {
     type Params: Serialize;
+    /// Creates a new instance of this component.
     fn new(params: &Self::Params, ctx: &SubstrateCtx) -> Result<Self>
     where
         Self: Sized;
+    /// Returns the component name.
     fn name(&self) -> ArcStr {
         // ...
     }
+    /// Generates a schematic.
     fn schematic(&self, ctx: &mut SchematicCtx) -> Result<()> {
         // ...
     }
+    /// Generates a layout.
     fn layout(&self, ctx: &mut LayoutCtx) -> Result<()> {
         // ...
     }
@@ -76,18 +80,22 @@ Process development kits (PDKs) are ordinary Rust libraries that provide a type 
 
 \begin{minted}{rust}
 pub trait Pdk {
+    /// The name of the PDK.
     fn name(&self) -> &'static str;
+    /// The name of the underlying process.
+    /// Will usually be equal to the PDK name.
     fn process(&self) -> &'static str;
+    /// The default unit for lengths.
     fn lengths(&self) -> Units;
+    /// The default unit for voltages.
     fn voltages(&self) -> SiPrefix;
+    /// The layers available to designers.
     fn layers(&self) -> Layers;
+    /// The supply voltages to be used with this PDK.
     fn supplies(&self) -> Supplies;
     /// Retrieves the list of MOSFETs available in this PDK.
     fn mos_devices(&self) -> Vec<MosSpec>;
     /// Provide the SPICE netlist for a MOSFET with the given parameters.
-    ///
-    /// The drain, gate, source, and body ports are named
-    /// \verb|d|, \verb|g|, \verb|s|, and \verb|b|, respectively.
     fn mos_schematic(&self, ctx: &mut SchematicCtx, params: &MosParams) -> Result<()>;
     /// Draws MOSFETs with the given parameters
     fn mos_layout(&self, ctx: &mut LayoutCtx, params: &LayoutMosParams) -> Result<()>;
@@ -119,7 +127,7 @@ pub trait Pdk {
 \end{minted}
 
 The \verb|layers| function returns a layer database, which includes information on GDS layer numbers, layer purposes, and additional metadata (eg. identifying which metal/via layers and providing layer names).
-The \verb|standard_cells| provides zero or more standard cell libraries. The standard cell API is described further in TODO.
+The \verb|standard_cells| provides zero or more standard cell libraries.
 The \verb|corners| function provides zero or more process corners. Depending on the corner the user selects, the PDK can include a different set of model libraries.
 The \verb|mos_schematic| and \verb|mos_layout| functions instantiate PDK-specific CMOS devices in schematic and layout mode, respectively.
 For further information on the other functions available, see the Substrate documentation.
@@ -137,15 +145,18 @@ impl Component for VDivider {
     // ...
     
   fn schematic(&self, ctx: &mut SchematicCtx) -> Result<()> {
+      /// Create 3 ports: out, vdd, and vss.
       let out = ctx.port("out", Direction::Output);
       let vdd = ctx.port("vdd", Direction::InOut);
       let vss = ctx.port("vss", Direction::InOut);
 
+      /// Instantiate a resistor between Vdd and out.
       ctx.instantiate::<Resistor>(&SiValue::new(2, SiPrefix::Kilo))?
           .with_connections([("p", vdd), ("n", out)])
           .named("R1")
           .add_to(ctx);
 
+      /// Instantiate a resistor between out and ground.
       ctx.instantiate::<Resistor>(&SiValue::new(1, SiPrefix::Kilo))?
           .with_connections([("p", out), ("n", vss)])
           .named("R2")
@@ -186,8 +197,8 @@ Most analog generators, Substrate included, produce layouts in roughly three ste
 \item Route between sub-components.
 \end{enumerate}
 
-The first step is described in more detail in \ref{sec:subcomponent-layout-generation},
-the second step in \ref{sec:placement-utilities}, and the third in \ref{sec:routing}.
+The first step is described in more detail in \nameref{sec:subcomponent-layout-generation},
+the second step in \nameref{sec:placement-utilities}, and the third in \nameref{sec:routing}.
 
 \subsection{Subcomponent Layout Generation} \label{sec:subcomponent-layout-generation}
 
@@ -244,8 +255,6 @@ The raw layout system provides utilities for:
 \item Flattening hierarchical layout elements.
 \item Trimming geometry that lies outside a masking shape.
 \end{itemize}
-
-\subsubsection{PDK-provided Unit Cells}
 
 \subsection{Placement Utilities} \label{sec:placement-utilities}
 

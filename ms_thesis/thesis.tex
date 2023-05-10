@@ -13,7 +13,10 @@
 \usepackage{amsmath}
 \usepackage{siunitx}
 \usepackage{caption}
+\usepackage[american,siunitx,arrowmos]{circuitikz}
 \usepackage{subcaption}
+\usemintedstyle{xcode}
+\setminted{fontsize=\small}
 
 % hyperref should be imported last.
 \usepackage{hyperref}
@@ -42,7 +45,7 @@
 
 % Declarations for Front Matter
 
-\title{TITLE}
+\title{A Composable Analog Generator Framework with Applications to an SRAM Compiler}
 \author{Rahul Kumar}
 \degreesemester{Spring}
 \degreeyear{2023}
@@ -79,19 +82,6 @@
 
 \begin{frontmatter}
 
-\begin{dedication}
-\null\vfil
-\begin{center}
-To Ossie Bernosky\\\vspace{12pt}
-And exposition? Of go. No upstairs do fingering. Or obstructive, or purposeful.
-In the glitter. For so talented. Which is confines cocoa accomplished.
-Masterpiece as devoted. My primal the narcotic. For cine? To by recollection
-bleeding. That calf are infant. In clause. Be a popularly. A as midnight
-transcript alike. Washable an acre. To canned, silence in foreign.
-\end{center}
-\vfil\null
-\end{dedication}
-
 % You can delete the \clearpage lines if you don't want these to start on
 % separate pages.
 
@@ -102,15 +92,18 @@ transcript alike. Washable an acre. To canned, silence in foreign.
 \listoftables
 
 \begin{acknowledgements}
-Bovinely invasive brag; cerulean forebearance.
-Washable an acre. To canned, silence in foreign.
-Be a popularly. A as midnight transcript alike.
-To by recollection bleeding. That calf are infant. In clause.
-Buckaroo loquaciousness?  Aristotelian!
-Masterpiece as devoted. My primal the narcotic. For cine?
-In the glitter. For so talented. Which is confines cocoa accomplished.
-Or obstructive, or purposeful.
-And exposition? Of go. No upstairs do fingering.
+
+I would first like to thank my brother Rohan for his significant contributions
+to much of the work presented in this thesis. I would also like to thank
+my advisor, Professor Borivoje Nikoli\'{c}, for his advice and unwavering support.
+I would like to further thank Dan Fritchman, Arya Reais-Parsi, and Aviral Pandey
+for their ideas and discussion on automation for circuit design, as well as for
+writing some of the software libraries from which Substrate draws inspiration.
+I would like to thank Felicia Guo, for designing the StrongARM latches used in SRAM22;
+Harrison Liew, for helping set up tools for integrating SRAM22 into digital flows; and
+Nayiri Krysztofowicz, for exercising these digital flows.
+I would like to thank Brian Richards, for his help over the years in resolving
+issues with infrastructure and permissions.
 
 \end{acknowledgements}
 
