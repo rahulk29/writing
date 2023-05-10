@@ -2,10 +2,12 @@
 
 SRAM22 is an open-source SRAM generator for the Skywater 130nm open-source process.
 SRAM22 programatically generates SRAM blocks by consuming:
-+ A TOML configuration file, such as the one shown below.
-+ A set of hard macros, including standard cells, a sense amplifier, and SRAM bitcells.
-+ A summary of process design rules.
-+ A Substrate PDK, which provides a parametric transistor generator.
+\begin{enumerate}
+\item A TOML configuration file, such as the one shown below.
+\item A set of hard macros, including standard cells, a sense amplifier, and SRAM bitcells.
+\item A summary of process design rules.
+\item A Substrate PDK, which provides a parametric transistor generator.
+\end{enumerate}
 
 SRAM22 does not attempt to be process-portable, even though many of the above components
 can, in principle, be swapped out to port SRAM22 to a new process.
@@ -42,9 +44,8 @@ Users can also request that SRAM22 run checks on the generated SRAM block, inclu
 \end{itemize}
 
 The complete source code for SRAM22 is available on \href{https://github.com/rahulk29/sram22}{GitHub}.
-
-\ref{sec:sram-architecture} describes the architecture of the generated SRAM blocks.
-\ref{sec:sram-layout-generation} describes how SRAM22 programatically generates layout.
+Section \ref{sec:sram-architecture} describes the architecture of the generated SRAM blocks.
+Section \ref{sec:sram-layout-generation} describes how SRAM22 programatically generates layout.
 
 \section{Architecture} \label{sec:sram-architecture}
 
@@ -175,9 +176,9 @@ This section describes a few representative examples.
 
 This section is organized as follows:
 \begin{enumerate}
-\item \ref{sec:bitcell-array-layout} describes how Substrate tiling APIs are used to produce SRAM bitcell arrays from foundry-provided cells.
-\item \ref{sec:precharge-layout} describes how Substrate's raw layout APIs can be used to produce very compact layouts.
-\item \ref{sec:control-logic-layout} describes how Substrate's routing APIs handle custom digital logic, where layout area is dominated
+\item \nameref{sec:bitcell-array-layout} describes how Substrate tiling APIs are used to produce SRAM bitcell arrays from foundry-provided cells.
+\item \nameref{sec:precharge-layout} describes how Substrate's raw layout APIs can be used to produce very compact layouts.
+\item \nameref{sec:control-logic-layout} describes how Substrate's routing APIs handle custom digital logic, where layout area is dominated
   by standard cell area, rather than by routing performance, and productivity is important.
 \end{enumerate}
 
@@ -225,7 +226,7 @@ Since the center cell contains taps at the left and top edges, the left/top nine
 do not contain internal tap structures, whereas the right/bottom cells do.
 \begin{figure}[H] \centering
 \begin{subfigure}[b]{0.22\textwidth} \centering
-\includegraphics[width=\textwidth]{figures/bitcell_left.png}
+\includegraphics[width=0.7\textwidth]{figures/bitcell_left.png}
 \caption{Left edge}
 \end{subfigure}
 \hfill
