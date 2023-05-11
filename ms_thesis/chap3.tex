@@ -133,6 +133,12 @@ We present a replica bitline design based on \cite{replicabl}.
 We use a design in which there are $N$ replica columns, each of which is smaller than a regular column by a factor of $K$. In other words, if a regular SRAM column has $h$ cells, each replica column will have $h/K$ cells.
 The $N$ replica columns are connected in parallel to reduce timing variation due to random effects in active replica cells.
 An inverter senses the discharging replica bitline and fires sense amplifiers.
+A simplified schematic of the replica circuitry is shown in \ref{fig:replica-schematic}
+
+\begin{figure}[H] \centering
+\includegraphics[width=0.8\textwidth]{figures/replica_schematic.png}
+\caption{A slightly simplified schematic of the replica circuitry. \label{fig:replica-schematic}}
+\end{figure}
 
 We now present a method for selecting the values of $N$ and $K$.
 
