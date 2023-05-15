@@ -174,7 +174,7 @@ The worst case conditions occur when:
 \begin{enumerate}
 \item The cell being read is slow: $ I_{cell} = I_{cell,0} - M_2 \sigma_{I_{cell}}. $
 
-\item The replica cells are fast: $ I_{replica} = N I_{cell} + M_2 \sqrt{N} \sigma_{I_{cell}}. $
+\item The replica cells are fast: $ I_{replica} = N I_{cell,0} + M_2 \sqrt{N} \sigma_{I_{cell}}. $
 
 \item The sense amplifiers have the maximal offset voltage $M_1 V_{os}$.
 \end{enumerate}
@@ -191,7 +191,7 @@ T_{SAE} = \frac{C_{replica}}{I_{replica}} \left( V_{DD} - V_{flip} \right)
 The worst case (latest) time at which sufficient bitline voltage margin has accumulated is
 
 \begin{equation} \label{eq:tmin}
-T_{min} = \frac{M_1 C_{bl} V_{os}}{I_{cell} - M_2 \sigma_{I_{cell}}}.
+T_{min} = \frac{M_1 C_{bl} V_{os}}{I_{cell,0} - M_2 \sigma_{I_{cell}}}.
 \end{equation}
 
 For correct operation, \ref{eq:tsae-max} must be larger than \ref{eq:tmin}. Thus, the correctness constraint is
