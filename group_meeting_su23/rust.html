@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Rust Crash Course</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Why you should stop writing Python
+
+### (and use Rust instead)
+
+Rahul and Rohan
+
+---
+
+# Agenda
+
+1. Introduction
+2. The borrow checker
+3. The type system
+4. Substrate
+
+---
+
+class: center, middle
+
+# Introduction
+
+---
+
+# Why Rust is better than Python
+
+--
+
+1. Better performance (both speed and memory).
+
+2. Strong type system catches mistakes at compile time.
+
+3. Built-in documentation, formatting, and linting.
+
+3. Visibility modifiers and structured function signatures encourage clean APIs.
+
+---
+
+class: center, middle
+
+# The Borrow Checker
+
+---
+
+# Borrow checker
+
+The borrow checker verifies a set of rules at compile. It does the magic of ensuring 
+that references are always valid (among other things).
+
+--
+
+Here's one set of borrow checking rules:
+
+- Every value has one and only one owner.
+- When a value's owner goes out of **scope**, the value is **dropped** (Rust lingo for "freed").
+- Can manually drop a value `v` early by calling `drop(v)`.
+
+---
+
+# Scopes
+
+**Scopes** are enclosed in curly braces:
+```rust
+fn do_stuff() {
+  let a = String::from("hello");
+  {
+    let b = String::from("goodbye");
+    // Can access a and b
+    // ...
+    // b goes out of scope and is dropped
+  }
+  // Cannot access b here: it is out of scope
+  // a is dropped at the end of the function
+}
+```
+
+Functions, loops, if statements, etc. have their own scope. You can also create nested scopes using curly braces.
+
+---
+
+# Moves
+
+Every value has one owner. Sometimes that owner can change. This is called a **move**.
+
+Assignment moves values. This is invalid:
+```rust
+let s1 = String::from("my string");
+let s2 = s1;  // Ownership of the string moves from s1 to s2.
+// s1 no longer owns the string, so we can't access data via s1.
+println!("{}", s1); // This is an error; data has been moved out of s1.
+```
+--
+
+This is fine:
+```rust
+let s1 = String::from("my string");
+let s2 = s1;  // Ownership of the string moves from s1 to s2.
+println!("{}", s2); // This is okay; s2 owns the string now.
+```
+
+---
+
+# Cloning
+
+If you need multiple variables to own data, you can `clone` a value:
+```rust
+let s1 = String::from("my string");
+let s2 = s1.clone();  // s2 is a clone of s1
+println!("{}", s2); // This is okay; s2 owns its data.
+println!("{}", s1); // This is okay; s1 also owns its data.
+```
+--
+
+Cloning is usually _expensive_, but often happens under the hood in other programming languages.
+
+---
+
+# Other cool features
+
+Rust's borrow checker has a lot of other cool features, a few of which we'll list here:
+- Only one reference can have the ability mutate a variable at any given time.
+- If references that can't mutate a variable exist, the variable cannot be mutated.
+- You can't create references that point to freed data.
+
+---
+
+class: center, middle
+
+# The Type System
+
+---
+
+# Primitive types
+
+* Signed integers: `i8, i16, i32, i64, i128, isize`
+* Unsigned integers: `u8, u16, u32, u64, u128, usize`
+* Floating point: `f32, f64`
+* Boolean: `bool`
+* Character: `char` (use single quotes, eg. `'a'`)
+
+---
+
+# Compound types
+
+##### Tuples:
+
+```rust
+// The type annotation is unnecessary
+let my_tuple: (i32, char, bool) = (162, 'X', true);
+let second: char = my_tuple.1; // 'X'
+```
+
+--
+
+##### Arrays:
+
+```rust
+// Arrays have a fixed size, as indicated in the (optional) type annotation
+let nums: [i32; 5] = [1, 2, 3, 4, 5];
+let second = nums[1];
+```
+
+--
+
+##### Structs:
+
+```rust
+struct Coordinate {
+  x: i32,
+  y: i32,
+}
+// ...
+let point = Coordinate {
+  x: 5,
+  y: 3,
+};
+```
+
+???
+
+No need to remember exact syntax.
+
+---
+
+# Functions
+
+--
+
+A function that squares the input:
+```rust
+fn square(x: i32) -> i32 {
+  return x * x;
+}
+```
+
+--
+Equivalent to:
+```rust
+fn square(x: i32) -> i32 {
+  x * x
+}
+```
+
+
+--
+
+If a function does not return a value, just omit the return type:
+```rust
+fn add_one(x: &mut i32) {
+  *x += 1;
+}
+```
+
+---
+
+# Enums
+
+
+Enum for different operating systems:
+```
+enum OperatingSystem {
+  Mac,
+  Windows,
+  Linux,
+  Other,
+}
+```
+
+--
+
+Even better:
+```
+enum OperatingSystem {
+  Mac,
+  Windows,
+  Linux,
+  Other(String)
+}
+
+let a = OperatingSystem:Linux;
+let b = OperatingSystem:Other("Redox OS".to_string());
+```
+
+Enum variants can store data!
+
+---
+
+# `Impl` blocks
+
+Suppose we have the following struct definition (not to be confused with `Vec`):
+```
+struct Vector {
+  x: f64,
+  y: f64,
+}
+```
+
+--
+
+We can add associated methods to a struct/enum using an impl block:
+
+```
+impl Vector {
+  fn add(&self, other: &Self) -> Self {
+    Self {
+      x: self.x + other.x,
+      y: self.y + other.y,
+    }
+  }
+}
+
+// let (v1, v2) = ...;
+let sum = v1.add(&v2);
+```
+
+---
+
+# Traits
+
+Traits (similar to interfaces in other languages) define shared behavior.
+
+--
+
+```rust
+trait Shape {
+  fn area(&self) -> i64;
+  fn perimeter(&mut self) -> i64;
+}
+```
+
+--
+
+Implement a trait:
+
+```
+struct Rect {
+  x0: i64,
+  y0: i64,
+  x1: i64,
+  y1: i64,
+}
+// Assumes that x1 >= x0 and y1 >= y0
+impl Shape for Rect {
+  fn area(&self) -> i64 {
+    (self.x1 - self.x0) * (self.y1 - self.y0)
+  }
+  fn perimeter(&mut self) -> i64 {
+    2 * (self.x1 - self.x0 + self.y1 - self.y0)
+  }
+}
+```
+
+---
+
+# Generics
+
+Generics allow you to write code that works for many types.
+
+--
+
+For example:
+```rust
+fn example1<T1>(arg1: T1) {
+  // arg1 has type T1; T1 can be any type.
+}
+```
+
+--
+
+The function above accepts any type `T1`.
+What if we want it to only work on some smaller set of types?
+
+---
+
+# Trait bounds
+
+Here's an example:
+
+```rust
+fn say_hello<T>(x: T) -> String
+where
+    T: std::fmt::Display,
+{
+    format!("Hello, {}!", x)
+}
+```
+
+--
+
+This function only accepts types that can be printed ("Display"ed in Rust lingo).
+
+---
+
+class: center, middle
+
+# Substrate examples
+
+---
+
+# Process specificity
+
+To declare that a block has a schematic in a particular PDK,
+it must implement `HasSchematic<PDK>`.
+
+You can implement `HasSchematic<PDK>` multiple times if you
+support multiple PDKs.
+
+--
+
+When describing the schematic of a block in `PDK1`, the type system
+only allows you to instantiate blocks that also have a schematic in `PDK1`.
+
+Here's the relevant method signature:
+
+```rust
+pub fn instantiate<I: HasSchematic<PDK>>(&mut self, block: I) -> Instance<I> {
+  // ...
+}
+```
+
+---
+
+# Process specificity (cont.)
+
+As a brief example from Substrate:
+
+```
+impl HasSchematic<Sky130OpenPdk> for Inverter {
+  fn schematic(
+      &self,
+      io: &<<Self as Block>::Io as substrate::io::SchematicType>::Bundle,
+      cell: &mut substrate::schematic::CellBuilder<PDK, Self>,
+  ) -> substrate::error::Result<Self::Data> {
+      let nmos = cell.instantiate(Nfet01v8::new((self.nw, self.lch)));
+      cell.connect(io.dout, nmos.io().d);
+      cell.connect(io.din, nmos.io().g);
+      cell.connect(io.vss, nmos.io().s);
+      cell.connect(io.vss, nmos.io().b);
+
+      let pmos = cell.instantiate(Pfet01v8::new((self.pw, self.lch)));
+      cell.connect(io.dout, pmos.io().d);
+      cell.connect(io.din, pmos.io().g);
+      cell.connect(io.vdd, pmos.io().s);
+      cell.connect(io.vdd, pmos.io().b);
+
+      Ok(())
+  }
+}
+```
+
+--
+
+Attempting to instantiate MOS devices from a different PDK would result in a compile time error.
+
+---
+
+# Process specificity (cont.)
+
+For truly process portable devices, such as a voltage divider that uses only ideal resistors,
+a **blanket implementation** can be used.
+
+```
+impl<PDK: Pdk> HasSchematic<PDK> for Vdivider {
+  fn schematic(
+      &self,
+      io: &VdividerIoSchematic,
+      cell: &mut CellBuilder<PDK, Self>,
+  ) -> substrate::error::Result<Self::Data> {
+      let r1 = cell.instantiate(Resistor::new(100));
+      let r2 = cell.instantiate(Resistor::new(100));
+
+      cell.connect(io.pwr.vdd, r1.io().p);
+      cell.connect(io.out, r1.io().n);
+      cell.connect(io.out, r2.io().p);
+      cell.connect(io.pwr.vss, r2.io().n);
+      Ok(VdividerData { r1, r2 })
+  }
+}
+
+```
+
+--
+
+Attempting to instantiate devices specific to a single PDK would throw a compiler error.
+
+---
+
+# Schematic ports
+
+Blocks declare the type of their I/O at compile time:
+
+```rust
+pub struct MosIo {
+  pub d: InOut<Signal>,
+  pub g: Input<Signal>,
+  pub s: InOut<Signal>,
+  pub b: InOut<Signal>,
+}
+```
+
+```rust
+let nmos = cell.instantiate(Nfet01v8::new((self.nw, self.lch)));
+cell.connect(io.dout, nmos.io().d);
+cell.connect(io.din, nmos.io().g);
+cell.connect(io.vss, nmos.io().s);
+cell.connect(io.vss, nmos.io().b);
+```
+
+If you did something like
+```rust
+cell.connect(io.dout, nmos.io().drain);
+```
+you'd get a compiler error: there is no "drain" port in `MosIo`.
+
+You can also get autocomplete in your IDE!
+No need to open up a separate tab to remind yourself what the port names are.
+
+---
+
+# Documentation
+
+Rust automatically generates documentation for everything and can be supplemented with doc-comments.
+The linter can also be told to enforce documentation by specifying `#![warn(missing_docs)]`.
+
+You end up with documentation like [this](https://api.substratelabs.io/sky130pdk/mos/struct.Nfet01v8.html), which makes finding the properties of any construct simple.
+
+---
+
+# Acknowledgements
+
+Some of the content and examples in these slides were drawn from:
+* [The Rust Book](https://doc.rust-lang.org/book/)
+* [Effective Rust](https://www.lurklurk.org/effective-rust/cover.html)
+
+Edward Zeng contributed to an earlier version of these slides.
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create({
+            highlightLanguage: 'rust',
+            highlightLines: true
+          });
+    </script>
+  </body>
+</html>
