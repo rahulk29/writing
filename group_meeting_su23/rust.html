@@ -50,11 +50,89 @@ class: center, middle
 
 1. Better performance (both speed and memory).
 
+--
+
 2. Strong type system catches mistakes at compile time.
+
+--
 
 3. Built-in documentation, formatting, and linting.
 
-3. Visibility modifiers and structured function signatures encourage clean APIs.
+--
+
+4. Visibility modifiers and structured function signatures encourage clean APIs.
+
+---
+
+# A Python API
+
+--
+
+```python3
+class Autorouter():
+    def __init__(self, layers, to_connect, **kwargs):
+      self.layers = layers
+      self.to_connect = to_connect
+      self.tool = kwargs["tool"]
+      self.kwargs = kwargs
+
+    def route_helper(self, routing_style=None, **kwargs)
+      print("Autorouting...")
+
+    def route(self, general_params):
+      self.route_helper(**general_params)
+```
+
+--
+
+- Have no idea what type `layers` and `to_connect` are. Even with type hints, you just get something like `Callable[[dict, str, Any], None]`.
+
+--
+
+- `kwargs` can contain anything, just looking at the function signature doesn't tell us that "tool" needs to be supplied.
+
+--
+
+- Nothing distinguishing `route` from `route_helper`, both are public APIs and nothing other than the function name tells us which is supposed to be used.
+
+--
+
+- It isn't clear what `general_params` is used for without tracing it through multiple functions.
+
+---
+
+# The Rust version
+
+```rust
+pub struct Layers {
+  pub names: Vec<String>,
+}
+
+pub struct ToConnect {
+  pub rect1: Rect,
+  pub rect2: Rect,
+}
+
+pub struct Autorouter {
+  layers: Layers,
+  to_connect: Vec<ToConnect>,
+  tool: Tool,
+}
+
+impl Autorouter {
+  pub fn new(layers: Layers, to_connect: Vec<ToConnect>, tool: Option<Tool>) -> Self {
+    // ...
+  }
+
+  fn route_helper(self, routing_style: RoutingStyle) {
+    println!("Autorouting...");
+  }
+
+  pub fn route(self, params: RoutingParams) {
+    self.routing_helper(params.routing_style);
+  }
+}
+```
 
 ---
 
@@ -137,11 +215,119 @@ Cloning is usually _expensive_, but often happens under the hood in other progra
 
 ---
 
+# References
+
+If you don't want to clone, you can just pass around references.
+
+```rust
+let s1 = String::from("my string");
+
+// This would not work
+use_string(s1)
+use_string(s1)
+
+// This would work
+use_string(&s1)
+use_string(&s1)
+```
+
+If you want the function to be able to modify the variable, need to explicitly make the reference mutable:
+
+```rust
+let s1 = String::from("my string");
+use_string(&mut s1)
+assert_eq!(&s1, "my string is now modified");
+```
+
+---
+
+# Why the extra step?
+
+--
+
+For example, Python slicing!
+
+```python3
+a = [1, 2, 3, 4, 5]
+b = a[:]
+```
+
+--
+
+`b` is the same array as `a`, but now we're using twice as much memory.
+
+--
+
+Rust slicing:
+
+```rust
+let a = vec![1, 2, 3, 4, 5];
+// `b` now points to the entirety of `a`, allocating only a pointer.
+let b = &a[..];
+// If you really needed a separate vector, you would need to do this:
+let b = a[..].clone();
+```
+
+---
+
+# Why the extra step? (cont.)
+
+--
+
+Pass by reference in other languages gets very confusing!
+
+```python3
+def call_fn(a: [int]) -> [int]:
+  # Some super long function we don't have time to read
+
+a = [1, 2, 3, 4, 5]
+b = call_fn(a)
+b[1] = 5
+```
+
+What is the value of `a` after these instructions?
+
+--
+
+We really have no idea if `call_fn` returns a modified version `a`, which would mean modifying `b` also modifies `a`, or if it returns a new array.
+We also have no idea if the function modifies `a`.
+
+`a` could basically be anything at this point.
+
+---
+
+# Why the extra step? (cont.)
+
+--
+
+Let's look at the same code in Rust.
+
+```rust
+fn call_fn<const N: usize>(a: &[i32; N]) -> [i32; N] {
+  // Some super long function we don't have time to read
+}
+
+let mut a = [1, 2, 3, 4, 5];
+let mut b = call_fn(&a);
+b[1] = 5;
+```
+
+What is the value of `a` after these instructions?
+
+--
+
+Since `call_fn` takes in an immutable reference, it can't possibly modify `a`. It also returns an owned array, which means that
+modifying `b` cannot possibly modify `a`.
+
+`a` is guaranteed to be [1, 2, 3, 4, 5].
+
+---
+
 # Other cool features
 
 Rust's borrow checker has a lot of other cool features, a few of which we'll list here:
 - Only one reference can have the ability mutate a variable at any given time.
-- If references that can't mutate a variable exist, the variable cannot be mutated.
+- If any immutable references to a variable exist, the variable cannot be mutated.
 - You can't create references that point to freed data.
 
 ---
