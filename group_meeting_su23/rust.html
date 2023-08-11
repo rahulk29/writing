@@ -666,6 +666,8 @@ pub struct MosIo {
 }
 ```
 
+--
+
 ```rust
 let nmos = cell.instantiate(Nfet01v8::new((self.nw, self.lch)));
 cell.connect(io.dout, nmos.io().d);
@@ -673,6 +675,8 @@ cell.connect(io.din, nmos.io().g);
 cell.connect(io.vss, nmos.io().s);
 cell.connect(io.vss, nmos.io().b);
 ```
+
+--
 
 If you did something like
 ```rust
@@ -685,9 +689,91 @@ No need to open up a separate tab to remind yourself what the port names are.
 
 ---
 
+# Nested Nodes
+
+You often want to probe the internal nodes of a circuit.
+
+--
+
+Typically do this by writing something along the lines of
+
+```python
+output = run_tran_simulation(...);
+output.get_data("v(xdut.xr1.n)")
+```
+
+--
+
+But this is brittle and hard to maintain:
+* How do you know what signals `xr1` contains?
+* What if the name of `xr1` changes (perhaps to `r1`)?
+* Are names case sensitive?
+
+---
+
+# Nested Nodes
+
+This is how you do the same thing in Substrate.
+
+--
+
+First, define what data each block exposes. For example:
+
+```rust
+#[derive(SchematicData)]
+pub struct VdividerData {
+    #[substrate(nested)]
+    r1: Instance<Resistor>,
+    #[substrate(nested)]
+    r2: Instance<Resistor>,
+}
+```
+
+The `nested` attribute tells Substrate to form hierarchical paths.
+
+--
+
+Next, get the probed value from your simulator's output:
+```rust
+let output = run_tran_simulation(...);
+output.get_data(&dut.data().r1.terminals().n)
+```
+
+--
+
+If the name `r1` changes, or if it stops exposing a terminal called `n`,
+your code won't compile! No need to run the generator to find bugs.
+
+---
+
+# Caching
+
+Generators often run time-consuming simulations.
+
+--
+
+End-to-end generators are better than piece-by-piece generators.
+But without caching, you needlessly re-run early steps when all
+you care about is the later steps.
+
+--
+  
+Substrate caches simulator calls, so you can write end-to-end
+generators at the same speed you'd write piece-by-piece generators.
+
+The cache API allows you to cache anything that can be serialized to disk (i.e. not just simulations).
+
+--
+
+You can specify multiple cache providers, and cache providers can be either
+local (on disk) or remote (served over HTTP).
+So caches can be shared across people working in the same project group, research group, etc.
+
+---
+
 # Documentation
 
-Rust automatically generates documentation for everything and can be supplemented with doc-comments.
+Rust automatically generates documentation that you can augment with doc-comments.
 The linter can also be told to enforce documentation by specifying `#![warn(missing_docs)]`.
 
 You end up with documentation like [this](https://api.substratelabs.io/sky130pdk/mos/struct.Nfet01v8.html), which makes finding the properties of any construct simple.
